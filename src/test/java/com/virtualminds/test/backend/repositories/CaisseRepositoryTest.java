@@ -18,8 +18,7 @@ class CaisseRepositoryTest {
     @Autowired
     private CaisseRepository caisseRepository;
 
-    //uncomment the below line
-//    @Test
+    @Test
     public void saveCaisse() throws ParseException {
 
         String date_string = "20-09-2022";
@@ -38,8 +37,7 @@ class CaisseRepositoryTest {
         caisseRepository.save(caisse);
     }
 
-    //uncomment the below line
-//    @Test
+    @Test
     public void printAllCaisses(){
         List<Caisse> caissesList = caisseRepository.findAll();
         System.out.println("liste des aisses : " + caissesList);

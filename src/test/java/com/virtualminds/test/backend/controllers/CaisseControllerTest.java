@@ -51,8 +51,7 @@ class CaisseControllerTest {
 
     }
 
-    //uncomment the below line
-    //    @Test
+        @Test
     void fetchCaissseById() throws Exception {
         Mockito.when(caisseService.getCaisseById(1L))
                 .thenReturn(caisseResponse);
