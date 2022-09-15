@@ -31,10 +31,10 @@ public class Application implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 
-//		if(userService.findRoleByRoleName("USER") == null) {
-//			userService.saveRole(new Role(null,"USER"));
-//			System.out.println("Role not found");
-//		}
+		if(userService.findRoleByRoleName("USER") == null) {
+			userService.saveRole(new Role(null,"USER"));
+			System.out.println("Role not found");
+		}
 //		System.out.println("role created with success!");
 //		System.out.println(new BigDecimal(-100));
 	}

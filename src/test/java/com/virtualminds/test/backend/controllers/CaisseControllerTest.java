@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureMockMvc
 class CaisseControllerTest {
 
-    @Autowired
+//    @Autowired
     private MockMvc mockMvc ;
     @MockBean
     private CaisseService caisseService;
