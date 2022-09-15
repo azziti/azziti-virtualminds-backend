@@ -3,7 +3,6 @@ package com.virtualminds.test.backend.controllers;
 import com.virtualminds.test.backend.entities.Caisse;
 import com.virtualminds.test.backend.services.CaisseService;
 import com.virtualminds.test.backend.shared.requests.CaisseRequest;
-import com.virtualminds.test.backend.shared.responses.CaisseResponse;
 import com.virtualminds.test.backend.shared.responses.CaisseResponseInterface;
 import com.virtualminds.test.backend.utils.error_managment.exceptions.NotCSVFileException;
 import com.virtualminds.test.backend.utils.heplers.CSVHelper;
@@ -31,12 +30,9 @@ public class CaisseController {
 
     // get caisses by periode
     @GetMapping("/periode")
-    public List<CaisseResponseInterface> getCaissesByPeriode(
-            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
-            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end
-            ) {
+    public List<CaisseResponseInterface> getCaissesByPeriode(@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start, @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
 
-        return caisseService.getCaissesByPeriode(start,end);
+        return caisseService.getCaissesByPeriode(start, end);
     }
 
     // get all caisses
@@ -47,43 +43,31 @@ public class CaisseController {
     }
 
     @GetMapping({"/{caisseId}"})
-    public ResponseEntity<Caisse> getCaisseById(
-            @PathVariable("caisseId") Long caisseId
-    ) throws InvocationTargetException, IllegalAccessException {
+    public ResponseEntity<Caisse> getCaisseById(@PathVariable("caisseId") Long caisseId) throws InvocationTargetException, IllegalAccessException {
 
-        return new ResponseEntity(
-                caisseService.getCaisseById(caisseId),
-                HttpStatus.OK
-        );
+        return new ResponseEntity(caisseService.getCaisseById(caisseId), HttpStatus.OK);
     }
 
     // new caisse
     @PostMapping
-    public ResponseEntity<Caisse> saveCaisse(
-            @RequestBody @Valid CaisseRequest caisseRequest
-    ) throws InvocationTargetException, IllegalAccessException {
+    public ResponseEntity<Caisse> saveCaisse(@RequestBody @Valid CaisseRequest caisseRequest) throws InvocationTargetException, IllegalAccessException {
         Caisse caisse = new Caisse();
-        BeanUtils.copyProperties(caisse,caisseRequest);
-        Caisse
-                _caisse = caisseService.insert(caisse);
+        BeanUtils.copyProperties(caisse, caisseRequest);
+        Caisse _caisse = caisseService.insert(caisse);
         return new ResponseEntity<>(_caisse, HttpStatus.CREATED);
     }
 
     //get caisse by id
     @PutMapping("/{caisseId}")
-    public ResponseEntity<Caisse> updateCaisse(
-            @PathVariable("caisseId") Long caisseId,
-            @RequestBody @Valid CaisseRequest caisseRequest
-    ) throws InvocationTargetException, IllegalAccessException {
+    public ResponseEntity<Caisse> updateCaisse(@PathVariable("caisseId") Long caisseId, @RequestBody @Valid CaisseRequest caisseRequest) throws InvocationTargetException, IllegalAccessException {
 
         Caisse caisse = new Caisse();
-        BeanUtils.copyProperties(caisse,caisseRequest);
+        BeanUtils.copyProperties(caisse, caisseRequest);
+
+        System.out.println();
 
         caisseService.updateCaisse(caisseId, caisse);
-        return new ResponseEntity(
-                caisseService.getCaisseById(caisseId),
-                HttpStatus.OK
-        );
+        return new ResponseEntity(caisseService.getCaisseById(caisseId), HttpStatus.OK);
     }
 
     // upload csv file
@@ -92,8 +76,8 @@ public class CaisseController {
         String message = "";
 
         if (CSVHelper.hasCSVFormat(file)) {
-                caisseService.saveFromFile(file);
-                message = "Uploaded the file successfully: " + file.getOriginalFilename();
+            caisseService.saveFromFile(file);
+            message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return new ResponseEntity<>(message, HttpStatus.CREATED);
 
 //            return ResponseEntity.status(HttpStatus.OK).body(message);
@@ -102,14 +86,11 @@ public class CaisseController {
             throw new NotCSVFileException(message);
         }
 
-
     }
 
     //delete caisse
     @DeleteMapping({"/{caisseId}"})
-    public ResponseEntity<Caisse> deleteCaisse(
-            @PathVariable("caisseId") Long caisseID)
-    {
+    public ResponseEntity<Caisse> deleteCaisse(@PathVariable("caisseId") Long caisseID) {
         caisseService.deleteCaisse(caisseID);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

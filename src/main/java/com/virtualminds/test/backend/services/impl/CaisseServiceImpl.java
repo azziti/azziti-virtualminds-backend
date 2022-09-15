@@ -27,9 +27,7 @@ public class CaisseServiceImpl implements CaisseService {
     @Override
     public CaisseResponse getCaisseById(Long id) throws NoSuchCaisseExistsException, InvocationTargetException, IllegalAccessException {
 
-        Caisse caisse = caisseRepository.findById(id).orElseThrow(
-                () -> new NoSuchCaisseExistsException("il n'existe aucune caisse portant l'id : " + id)
-        );
+        Caisse caisse = caisseRepository.findById(id).orElseThrow(() -> new NoSuchCaisseExistsException("il n'existe aucune caisse portant l'id : " + id));
 
         CaisseResponse caisseResponse = new CaisseResponse();
         BeanUtils.copyProperties(caisseResponse, caisse);
@@ -45,14 +43,14 @@ public class CaisseServiceImpl implements CaisseService {
     @Override
     public void updateCaisse(Long id, Caisse caisse) throws NoSuchCaisseExistsException {
 
-        Caisse caisseFromDB = caisseRepository
-                .findById(id).orElseThrow(
-                        () -> new NoSuchCaisseExistsException("il n'existe aucune caisse portant l'id : \"+id")
-                );
+        Caisse caisseFromDB = caisseRepository.findById(id).orElseThrow(
+                () -> new NoSuchCaisseExistsException("il n'existe aucune caisse portant l'id : \"+id")
+        );
 
         caisseFromDB.setAmountIn(caisse.getAmountIn());
         caisseFromDB.setAmountOut(caisse.getAmountOut());
         caisseFromDB.setLibelle(caisse.getLibelle());
+        caisseFromDB.setOperationDate(caisse.getOperationDate());
 
         caisseRepository.save(caisseFromDB);
     }
@@ -62,6 +60,8 @@ public class CaisseServiceImpl implements CaisseService {
         caisseRepository.deleteById(id);
     }
 
+
+    // get caisses between two date
     @Override
     public List<CaisseResponseInterface> getCaissesByPeriode(Date start, Date end) {
 

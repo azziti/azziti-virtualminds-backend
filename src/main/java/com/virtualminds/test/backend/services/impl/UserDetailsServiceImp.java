@@ -23,7 +23,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        com.virtualminds.test.backend.entities.User user = userService.findUserByUsername(username);
+        com.virtualminds.test.backend.entities.User
+                user = userService.findUserByUsername(username);
 
         if(user == null)
         {

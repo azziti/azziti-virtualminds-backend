@@ -34,7 +34,7 @@ public class User {
 
     @NotNull(message = "Le mot de passe est obligatoire")
     @NotBlank(message = "Le mot de passe ne peut pas être vide")
-    @Size(min = 8 , message = "Le mot de passe doit avoir au moins 8 caractères.")
+    @Size(min = 8, message = "Le mot de passe doit avoir au moins 8 caractères.")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

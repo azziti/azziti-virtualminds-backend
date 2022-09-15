@@ -20,8 +20,8 @@ public class Application implements CommandLineRunner {
 
 	}
 
-//	@Autowired
-//	private UserService userService;
+	@Autowired
+	private UserService userService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -34,8 +34,7 @@ public class Application implements CommandLineRunner {
 		if(userService.findRoleByRoleName("USER") == null) {
 			userService.saveRole(new Role(null,"USER"));
 			System.out.println("Role not found");
+			System.out.println("role created with success!");
 		}
-//		System.out.println("role created with success!");
-//		System.out.println(new BigDecimal(-100));
 	}
 }

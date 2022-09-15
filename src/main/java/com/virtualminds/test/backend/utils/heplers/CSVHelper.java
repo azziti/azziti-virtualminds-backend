@@ -67,11 +67,25 @@ public class CSVHelper {
 
             for (CSVRecord csvRecord : csvRecords) {
 
+                //before creating a new caisse item we need to check for dields validity
+                //if fields are not valid we set cautom value
                 Caisse caisse = new Caisse(
-                        csvRecord.get(HEADERS.get("libelle")).isBlank() ? "Ajouter un libellé " : csvRecord.get(HEADERS.get("libelle")),
-                        csvRecord.get(HEADERS.get("amountIn")).matches("\\d+(\\.\\d+)?") ? Double.parseDouble(csvRecord.get(HEADERS.get("amountIn"))) : 0,
-                        csvRecord.get(HEADERS.get("amountOut")).matches("\\d+(\\.\\d+)?") ? Double.parseDouble(csvRecord.get(HEADERS.get("amountOut"))) : 0,
-                        csvRecord.get(HEADERS.get("operationDate")).matches("\\d{4}-\\d{2}-\\d{2}") ? formatter.parse(csvRecord.get(HEADERS.get("operationDate"))) : java.sql.Date.valueOf( LocalDate.now())                );
+                        // if empty it' set to Ajouter un libellé
+                        csvRecord
+                                .get(HEADERS.get("libelle")).isBlank() ?
+                                    "Ajouter un libellé" : csvRecord.get(HEADERS.get("libelle")),
+                        // check if it's a number or set to zero
+                        csvRecord
+                                .get(HEADERS.get("amountIn")).matches("\\d+(\\.\\d+)?") ?
+                                    Double.parseDouble(csvRecord.get(HEADERS.get("amountIn"))) : 0,
+                        // check if it's a number or set to zero
+                        csvRecord
+                                .get(HEADERS.get("amountOut")).matches("\\d+(\\.\\d+)?") ?
+                                    Double.parseDouble(csvRecord.get(HEADERS.get("amountOut"))) : 0,
+                        // check if it's a valid date or set it to ths current day date
+                        csvRecord
+                                .get(HEADERS.get("operationDate")).matches("\\d{4}-\\d{2}-\\d{2}") ?
+                                    formatter.parse(csvRecord.get(HEADERS.get("operationDate"))) : java.sql.Date.valueOf( LocalDate.now())                );
 
                 caisses.add(caisse);
             }

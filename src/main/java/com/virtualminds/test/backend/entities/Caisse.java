@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -20,21 +21,21 @@ public class Caisse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long caisseID ;
+    private Long caisseID;
 
     @NotNull(message = "Le libellé est obligatoire")
     @NotBlank(message = "Le libellé ne peut pas être vide")
-    private String libelle ;
+    private String libelle;
 
 
     @NotNull(message = "Les recettes sont obligatoires")
-    @PositiveOrZero( message = "Les recettes doivent être positives")
-    @Column(name="recettes")
+    @PositiveOrZero(message = "Les recettes doivent être positives")
+    @Column(name = "recettes")
     private double amountIn = 0;
 
     @NotNull(message = "Les dépenses sont obligatoires")
-    @PositiveOrZero( message = "Les dépenses doivent être positives")
-    @Column(name="depenses")
+    @PositiveOrZero(message = "Les dépenses doivent être positives")
+    @Column(name = "depenses")
     private double amountOut = 0;
 
     @NotNull(message = "La date d'operation est obligatoire")

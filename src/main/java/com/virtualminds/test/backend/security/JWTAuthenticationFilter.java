@@ -7,6 +7,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,8 +31,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     // attempt to login
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         com.virtualminds.test.backend.entities.User user = null;
         try {
             user = new ObjectMapper().readValue(request.getInputStream(), com.virtualminds.test.backend.entities.User.class);
@@ -44,16 +44,22 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     //when login with success
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain,
+            Authentication authResult
+    ) throws IOException, ServletException {
 
         User springUser = (User) authResult.getPrincipal();
-        String jwt = Jwts.builder()
-                .setSubject(springUser.getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SecurityConstants.SECRET)
-                .claim("roles", springUser.getAuthorities())
-                .compact();
+        String jwt = Jwts.builder().setSubject(springUser.getUsername())
+                            .setExpiration(
+                                    new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME)
+                            ).signWith(
+                                    SignatureAlgorithm.HS256,
+                                    SecurityConstants.SECRET
+                            ).claim("roles", springUser.getAuthorities()).compact();
+
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + jwt);
 
     }

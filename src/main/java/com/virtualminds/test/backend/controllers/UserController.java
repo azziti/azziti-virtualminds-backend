@@ -23,12 +23,12 @@ public class UserController {
     @PostMapping("/register")
     public User register(@RequestBody @Valid RegisterRequest registerRequest) throws InvocationTargetException, PasswordMismatchException, IllegalAccessException {
 
-        if(!registerRequest.getPassword().equals(registerRequest.getRepassword()))
+        if (!registerRequest.getPassword().equals(registerRequest.getRepassword()))
             throw new PasswordMismatchException("le mot de passe et la confirmation doivent etre identique !");
 
 
         User user = new User();
-        BeanUtils.copyProperties(user , registerRequest);
+        BeanUtils.copyProperties(user, registerRequest);
         userService.saveUser(user);
         userService.AddRoleToUser(user.getUsername(), "USER");
         return user;
