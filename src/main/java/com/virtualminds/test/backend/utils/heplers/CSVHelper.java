@@ -34,6 +34,8 @@ public class CSVHelper {
             };
 
 
+
+
     //check if a file is a csv
     public static boolean hasCSVFormat(MultipartFile file) {
 
@@ -59,17 +61,17 @@ public class CSVHelper {
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
             long size = csvRecords.spliterator().getExactSizeIfKnown();
-            if (size <= 0) {
+            if ( size <= 0 ) {
                 throw new CSVFileEmptyException("Your CSV file is empty");
             }
 
             for (CSVRecord csvRecord : csvRecords) {
 
                 Caisse caisse = new Caisse(
-                        (csvRecord.get(HEADERS.get("libelle")) == null || csvRecord.get(HEADERS.get("libelle")).length() == 0) ? "Ajouter un libellé " : csvRecord.get(HEADERS.get("libelle")),
+                        csvRecord.get(HEADERS.get("libelle")).isBlank() ? "Ajouter un libellé " : csvRecord.get(HEADERS.get("libelle")),
                         csvRecord.get(HEADERS.get("amountIn")).matches("\\d+(\\.\\d+)?") ? Double.parseDouble(csvRecord.get(HEADERS.get("amountIn"))) : 0,
                         csvRecord.get(HEADERS.get("amountOut")).matches("\\d+(\\.\\d+)?") ? Double.parseDouble(csvRecord.get(HEADERS.get("amountOut"))) : 0,
-                        csvRecord.get(HEADERS.get("operationDate")).matches("\\d{4}-\\d{2}-\\d{2}") ? formatter.parse(csvRecord.get(HEADERS.get("operationDate"))) : java.sql.Date.valueOf(LocalDate.now()));
+                        csvRecord.get(HEADERS.get("operationDate")).matches("\\d{4}-\\d{2}-\\d{2}") ? formatter.parse(csvRecord.get(HEADERS.get("operationDate"))) : java.sql.Date.valueOf( LocalDate.now())                );
 
                 caisses.add(caisse);
             }
